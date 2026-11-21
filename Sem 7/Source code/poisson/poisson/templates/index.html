@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>HELIOS | 3D Lung Tumor Reconstruction</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f3f6fa;
+            color: #172033;
+        }
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .header {
+            background: linear-gradient(
+                135deg,
+                #0f1f3d,
+                #173b6c
+            );
+
+            color: white;
+            padding: 22px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .brand-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+
+            background: rgba(255,255,255,0.15);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 22px;
+        }
+
+        .brand h1 {
+            margin: 0;
+            font-size: 27px;
+            letter-spacing: 1px;
+        }
+
+        .brand span {
+            font-size: 13px;
+            opacity: 0.8;
+        }
+
+        .header-status {
+            font-size: 13px;
+            opacity: 0.85;
+        }
+
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        .container {
+            max-width: 1150px;
+            margin: 45px auto;
+            padding: 0 25px;
+        }
+
+
+        /* =====================================================
+           INTRO
+        ===================================================== */
+
+        .intro {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .intro h2 {
+            margin: 0;
+            font-size: 34px;
+            color: #12264a;
+        }
+
+        .intro p {
+            margin-top: 12px;
+            color: #64748b;
+            font-size: 16px;
+        }
+
+
+        /* =====================================================
+           MAIN CARD
+        ===================================================== */
+
+        .main-card {
+            background: white;
+            border-radius: 20px;
+
+            padding: 42px;
+
+            box-shadow:
+                0 12px 35px rgba(15, 31, 61, 0.08);
+
+            border: 1px solid #e5eaf1;
+        }
+
+
+        /* =====================================================
+           UPLOAD AREA
+        ===================================================== */
+
+        .upload-box {
+
+            border: 2px dashed #9bb0c9;
+
+            border-radius: 18px;
+
+            padding: 55px 30px;
+
+            text-align: center;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #f8fbff,
+                    #f4f7fb
+                );
+
+            transition: 0.25s;
+        }
+
+        .upload-box:hover {
+
+            border-color: #245a94;
+
+            background: #f1f7ff;
+
+        }
+
+        .upload-icon {
+
+            width: 70px;
+            height: 70px;
+
+            margin: auto;
+
+            border-radius: 18px;
+
+            background: #e6effa;
+
+            color: #174777;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-size: 32px;
+
+            margin-bottom: 20px;
+        }
+
+        .upload-box h3 {
+
+            margin: 0;
+
+            font-size: 22px;
+
+            color: #172b4d;
+
+        }
+
+        .upload-box p {
+
+            color: #718096;
+
+            margin: 10px 0 20px;
+
+        }
+
+        input[type="file"] {
+
+            display: none;
+
+        }
+
+        .file-label {
+
+            display: inline-block;
+
+            padding: 12px 22px;
+
+            background: #173b6c;
+
+            color: white;
+
+            border-radius: 9px;
+
+            cursor: pointer;
+
+            font-weight: 600;
+
+            transition: 0.2s;
+        }
+
+        .file-label:hover {
+
+            background: #245a94;
+
+        }
+
+        .file-name {
+
+            min-height: 24px;
+
+            margin-top: 18px;
+
+            color: #173b6c;
+
+            font-weight: 600;
+
+        }
+
+
+        /* =====================================================
+           SUBMIT BUTTON
+        ===================================================== */
+
+        .submit-area {
+
+            text-align: center;
+
+            margin-top: 30px;
+
+        }
+
+        .submit-button {
+
+            border: none;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #173b6c,
+                    #245a94
+                );
+
+            color: white;
+
+            padding: 15px 35px;
+
+            border-radius: 10px;
+
+            font-size: 16px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: 0.25s;
+
+            box-shadow:
+                0 6px 15px rgba(23,59,108,0.20);
+        }
+
+        .submit-button:hover {
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 9px 20px rgba(23,59,108,0.28);
+        }
+
+        .submit-button:disabled {
+
+            background: #94a3b8;
+
+            cursor: not-allowed;
+
+            transform: none;
+
+        }
+
+
+        /* =====================================================
+           PROCESSING
+        ===================================================== */
+
+        .loading {
+
+            display: none;
+
+            margin-top: 35px;
+
+            padding: 25px;
+
+            border-radius: 14px;
+
+            background: #eef5fc;
+
+            text-align: center;
+
+        }
+
+        .spinner {
+
+            width: 40px;
+            height: 40px;
+
+            margin: 0 auto 15px;
+
+            border-radius: 50%;
+
+            border: 4px solid #d8e5f3;
+
+            border-top: 4px solid #173b6c;
+
+            animation: spin 1s linear infinite;
+
+        }
+
+        @keyframes spin {
+
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+
+        }
+
+        .loading-title {
+
+            font-weight: 700;
+
+            color: #173b6c;
+
+            margin-bottom: 6px;
+
+        }
+
+        .loading-text {
+
+            color: #64748b;
+
+            font-size: 14px;
+
+        }
+
+
+        /* =====================================================
+           PIPELINE
+        ===================================================== */
+
+        .pipeline-title {
+
+            text-align: center;
+
+            margin-top: 50px;
+
+            margin-bottom: 22px;
+
+            color: #172b4d;
+
+        }
+
+        .pipeline {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 40px 1fr 40px 1fr;
+
+            align-items: center;
+
+        }
+
+        .pipeline-step {
+
+            background: #f8fafc;
+
+            border: 1px solid #e2e8f0;
+
+            border-radius: 12px;
+
+            padding: 20px;
+
+            text-align: center;
+
+        }
+
+        .pipeline-step strong {
+
+            display: block;
+
+            color: #173b6c;
+
+            margin-bottom: 7px;
+
+        }
+
+        .pipeline-step span {
+
+            font-size: 13px;
+
+            color: #64748b;
+
+        }
+
+        .arrow {
+
+            text-align: center;
+
+            font-size: 22px;
+
+            color: #8ca4bf;
+
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .footer {
+
+            text-align: center;
+
+            margin: 35px 0;
+
+            color: #94a3b8;
+
+            font-size: 13px;
+
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media(max-width: 750px) {
+
+            .header {
+
+                padding: 20px;
+
+            }
+
+            .header-status {
+
+                display: none;
+
+            }
+
+            .main-card {
+
+                padding: 22px;
+
+            }
+
+            .intro h2 {
+
+                font-size: 27px;
+
+            }
+
+            .pipeline {
+
+                grid-template-columns: 1fr;
+
+                gap: 10px;
+
+            }
+
+            .arrow {
+
+                transform: rotate(90deg);
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
+
+<header class="header">
+
+    <div class="brand">
+
+        <div class="brand-icon">
+            H
+        </div>
+
+        <div>
+
+            <h1>HELIOS</h1>
+
+            <span>
+                3D Lung Tumor Reconstruction Platform
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="header-status">
+
+        Poisson Surface Reconstruction
+
+    </div>
+
+</header>
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main class="container">
+
+
+    <div class="intro">
+
+        <h2>
+            3D Lung Tumor Reconstruction
+        </h2>
+
+        <p>
+            Convert a MedSAM2-predicted tumor segmentation
+            into an interactive 3D surface model.
+        </p>
+
+    </div>
+
+
+    <div class="main-card">
+
+
+        <!-- =================================================
+             UPLOAD
+        ================================================== -->
+
+        <form
+            action="/reconstruct"
+            method="POST"
+            enctype="multipart/form-data"
+            onsubmit="startProcessing()"
+        >
+
+            <div class="upload-box">
+
+
+                <div class="upload-icon">
+                    +
+                </div>
+
+
+                <h3>
+                    Upload Tumor Segmentation
+                </h3>
+
+
+                <p>
+                    Select a NIfTI segmentation file
+                    (.nii or .nii.gz)
+                </p>
+
+
+                <label
+                    for="file"
+                    class="file-label"
+                >
+                    Choose NIfTI File
+                </label>
+
+
+                <input
+                    type="file"
+                    id="file"
+                    name="file"
+                    accept=".nii,.nii.gz,.gz"
+                    required
+                    onchange="showFileName()"
+                >
+
+
+                <div
+                    id="fileName"
+                    class="file-name"
+                >
+                    No file selected
+                </div>
+
+
+            </div>
+
+
+            <div class="submit-area">
+
+                <button
+                    type="submit"
+                    id="submitButton"
+                    class="submit-button"
+                >
+                    Generate 3D Reconstruction
+                </button>
+
+            </div>
+
+
+        </form>
+
+
+        <!-- =================================================
+             LOADING
+        ================================================== -->
+
+        <div
+            class="loading"
+            id="loading"
+        >
+
+            <div class="spinner"></div>
+
+
+            <div class="loading-title">
+
+                Reconstruction in Progress
+
+            </div>
+
+
+            <div class="loading-text">
+
+                Extracting tumor surface and
+                running Poisson reconstruction.
+                Please wait...
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             PIPELINE
+        ================================================== -->
+
+        <h3 class="pipeline-title">
+
+            HELIOS Reconstruction Pipeline
+
+        </h3>
+
+
+        <div class="pipeline">
+
+
+            <div class="pipeline-step">
+
+                <strong>
+                    INPUT
+                </strong>
+
+                <span>
+                    MedSAM2 3D Tumor Segmentation
+                </span>
+
+            </div>
+
+
+            <div class="arrow">
+                →
+            </div>
+
+
+            <div class="pipeline-step">
+
+                <strong>
+                    RECONSTRUCTION
+                </strong>
+
+                <span>
+                    Surface Extraction + Poisson
+                </span>
+
+            </div>
+
+
+            <div class="arrow">
+                →
+            </div>
+
+
+            <div class="pipeline-step">
+
+                <strong>
+                    OUTPUT
+                </strong>
+
+                <span>
+                    Interactive 3D Triangular Mesh
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+    <div class="footer">
+
+        HELIOS • Lung Tumor 3D Reconstruction
+
+    </div>
+
+
+</main>
+
+
+<script>
+
+function showFileName() {
+
+    const input =
+        document.getElementById("file");
+
+    const fileName =
+        document.getElementById("fileName");
+
+
+    if (input.files.length > 0) {
+
+        fileName.textContent =
+            input.files[0].name;
+
+    }
+
+    else {
+
+        fileName.textContent =
+            "No file selected";
+
+    }
+
+}
+
+
+function startProcessing() {
+
+    document.getElementById(
+        "submitButton"
+    ).disabled = true;
+
+
+    document.getElementById(
+        "submitButton"
+    ).textContent = "Processing...";
+
+
+    document.getElementById(
+        "loading"
+    ).style.display = "block";
+
+}
+
+</script>
+
+
+</body>
+
+</html>

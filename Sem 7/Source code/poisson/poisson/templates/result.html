@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>HELIOS | Reconstruction Result</title>
+
+    <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+
+            margin: 0;
+
+            font-family:
+                "Segoe UI",
+                Arial,
+                sans-serif;
+
+            background: #f3f6fa;
+
+            color: #172033;
+
+        }
+
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .header {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #0f1f3d,
+                    #173b6c
+                );
+
+            color: white;
+
+            padding: 20px 7%;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            box-shadow:
+                0 4px 15px rgba(0,0,0,0.12);
+
+        }
+
+
+        .brand {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+
+        }
+
+
+        .brand-icon {
+
+            width: 45px;
+
+            height: 45px;
+
+            border-radius: 12px;
+
+            background:
+                rgba(255,255,255,0.15);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 22px;
+
+        }
+
+
+        .brand h1 {
+
+            margin: 0;
+
+            font-size: 27px;
+
+            letter-spacing: 1px;
+
+        }
+
+
+        .brand span {
+
+            font-size: 13px;
+
+            opacity: 0.8;
+
+        }
+
+
+        .status {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            font-size: 13px;
+
+        }
+
+
+        .status-dot {
+
+            width: 9px;
+
+            height: 9px;
+
+            border-radius: 50%;
+
+            background: #54d68c;
+
+        }
+
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        .container {
+
+            max-width: 1450px;
+
+            margin: 35px auto;
+
+            padding: 0 25px;
+
+        }
+
+
+        .page-title {
+
+            text-align: center;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .page-title h2 {
+
+            margin: 0;
+
+            font-size: 32px;
+
+            color: #12264a;
+
+        }
+
+
+        .page-title p {
+
+            color: #64748b;
+
+            margin-top: 9px;
+
+        }
+
+
+        /* =====================================================
+           SUMMARY BAR
+        ===================================================== */
+
+        .success-banner {
+
+            background: #edf9f2;
+
+            border: 1px solid #ccebd8;
+
+            color: #17663b;
+
+            border-radius: 12px;
+
+            padding: 13px 18px;
+
+            margin-bottom: 22px;
+
+            font-weight: 600;
+
+        }
+
+
+        /* =====================================================
+           MAIN GRID
+        ===================================================== */
+
+        .layout {
+
+            display: grid;
+
+            grid-template-columns:
+                320px
+                minmax(0, 1fr);
+
+            gap: 25px;
+
+            align-items: start;
+
+        }
+
+
+        /* =====================================================
+           CARD
+        ===================================================== */
+
+        .card {
+
+            background: white;
+
+            border-radius: 18px;
+
+            border: 1px solid #e4e9f0;
+
+            box-shadow:
+                0 10px 30px
+                rgba(15,31,61,0.07);
+
+        }
+
+
+        /* =====================================================
+           PATIENT PANEL
+        ===================================================== */
+
+        .patient-card {
+
+            padding: 25px;
+
+        }
+
+
+        .patient-card h3 {
+
+            margin-top: 0;
+
+            color: #173b6c;
+
+            font-size: 21px;
+
+        }
+
+
+        .patient-id {
+
+            background: #eef4fb;
+
+            border-radius: 10px;
+
+            padding: 13px;
+
+            color: #173b6c;
+
+            font-weight: 700;
+
+            word-break: break-word;
+
+            margin-bottom: 18px;
+
+        }
+
+
+        .stat {
+
+            padding: 15px 0;
+
+            border-bottom:
+                1px solid #e7ebf0;
+
+        }
+
+
+        .stat:last-child {
+
+            border-bottom: none;
+
+        }
+
+
+        .stat-label {
+
+            color: #718096;
+
+            font-size: 13px;
+
+            margin-bottom: 5px;
+
+        }
+
+
+        .stat-value {
+
+            font-size: 20px;
+
+            font-weight: 700;
+
+            color: #172033;
+
+        }
+
+
+        .method-box {
+
+            margin-top: 20px;
+
+            padding: 17px;
+
+            background: #f8fafc;
+
+            border-radius: 11px;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+            color: #526174;
+
+        }
+
+
+        .method-box strong {
+
+            color: #173b6c;
+
+        }
+
+
+        /* =====================================================
+           VISUALIZATION
+        ===================================================== */
+
+        .viewer-card {
+
+            overflow: hidden;
+
+        }
+
+
+        .viewer-header {
+
+            padding: 20px 24px;
+
+            border-bottom:
+                1px solid #e7ebf0;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+        }
+
+
+        .viewer-title {
+
+            font-size: 20px;
+
+            font-weight: 700;
+
+            color: #172b4d;
+
+        }
+
+
+        .viewer-subtitle {
+
+            color: #718096;
+
+            font-size: 13px;
+
+            margin-top: 4px;
+
+        }
+
+
+        .viewer-badge {
+
+            background: #eaf2fb;
+
+            color: #173b6c;
+
+            padding: 7px 12px;
+
+            border-radius: 20px;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+        }
+
+
+        #plot {
+
+            width: 100%;
+
+            height: 700px;
+
+        }
+
+
+        /* =====================================================
+           BOTTOM INFORMATION
+        ===================================================== */
+
+        .info-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 18px;
+
+            margin-top: 25px;
+
+        }
+
+
+        .info-card {
+
+            background: white;
+
+            border: 1px solid #e4e9f0;
+
+            border-radius: 14px;
+
+            padding: 20px;
+
+            text-align: center;
+
+            box-shadow:
+                0 6px 20px
+                rgba(15,31,61,0.05);
+
+        }
+
+
+        .info-card strong {
+
+            display: block;
+
+            color: #173b6c;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .info-card span {
+
+            color: #64748b;
+
+            font-size: 13px;
+
+        }
+
+
+        /* =====================================================
+           BUTTONS
+        ===================================================== */
+
+        .actions {
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 12px;
+
+            margin-top: 28px;
+
+        }
+
+
+        .button {
+
+            display: inline-block;
+
+            text-decoration: none;
+
+            padding: 12px 20px;
+
+            border-radius: 9px;
+
+            font-weight: 600;
+
+            font-size: 14px;
+
+            transition: 0.2s;
+
+        }
+
+
+        .primary-button {
+
+            background: #173b6c;
+
+            color: white;
+
+        }
+
+
+        .primary-button:hover {
+
+            background: #245a94;
+
+            transform: translateY(-1px);
+
+        }
+
+
+        .secondary-button {
+
+            background: white;
+
+            color: #173b6c;
+
+            border:
+                1px solid #bdc9d8;
+
+        }
+
+
+        .secondary-button:hover {
+
+            background: #f2f6fa;
+
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .footer {
+
+            text-align: center;
+
+            color: #94a3b8;
+
+            font-size: 13px;
+
+            margin: 30px 0;
+
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media(max-width: 950px) {
+
+            .layout {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .info-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            #plot {
+
+                height: 600px;
+
+            }
+
+        }
+
+
+        @media(max-width: 600px) {
+
+            .header {
+
+                padding: 18px 20px;
+
+            }
+
+            .status {
+
+                display: none;
+
+            }
+
+            .container {
+
+                padding: 0 15px;
+
+            }
+
+            #plot {
+
+                height: 500px;
+
+            }
+
+            .actions {
+
+                flex-direction: column;
+
+            }
+
+            .button {
+
+                text-align: center;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
+
+<header class="header">
+
+    <div class="brand">
+
+        <div class="brand-icon">
+            H
+        </div>
+
+        <div>
+
+            <h1>HELIOS</h1>
+
+            <span>
+                3D Lung Tumor Reconstruction Platform
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="status">
+
+        <div class="status-dot"></div>
+
+        Reconstruction Complete
+
+    </div>
+
+</header>
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main class="container">
+
+
+    <div class="page-title">
+
+        <h2>
+            Poisson Reconstruction Result
+        </h2>
+
+        <p>
+            Interactive 3D visualization of the reconstructed tumor
+        </p>
+
+    </div>
+
+
+    <div class="success-banner">
+
+        ✓ 3D tumor reconstruction completed successfully
+
+    </div>
+
+
+    <div class="layout">
+
+
+        <!-- =================================================
+             PATIENT INFORMATION
+        ================================================== -->
+
+        <div class="card patient-card">
+
+
+            <h3>
+                Patient Information
+            </h3>
+
+
+            <div class="patient-id">
+
+                {{ patient_id }}
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Tumor Voxels
+                </div>
+
+                <div class="stat-value">
+
+                    {{ "{:,}".format(tumor_voxels) }}
+
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Tumor Volume
+                </div>
+
+                <div class="stat-value">
+
+                    {{ "%.2f"|format(tumor_volume_mm3) }}
+
+                    mm³
+
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Surface Points
+                </div>
+
+                <div class="stat-value">
+
+                    {{ "{:,}".format(surface_points) }}
+
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Mesh Vertices
+                </div>
+
+                <div class="stat-value">
+
+                    {{ "{:,}".format(vertices) }}
+
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Mesh Triangles
+                </div>
+
+                <div class="stat-value">
+
+                    {{ "{:,}".format(triangles) }}
+
+                </div>
+
+            </div>
+
+
+            <div class="method-box">
+
+                <strong>Input</strong><br>
+
+                MedSAM2 predicted tumor mask
+
+                <br><br>
+
+                <strong>Reconstruction</strong><br>
+
+                Poisson Surface Reconstruction
+
+                <br><br>
+
+                <strong>Output</strong><br>
+
+                3D triangular mesh
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             3D VIEWER
+        ================================================== -->
+
+        <div class="card viewer-card">
+
+
+            <div class="viewer-header">
+
+                <div>
+
+                    <div class="viewer-title">
+
+                        3D Tumor Reconstruction
+
+                    </div>
+
+                    <div class="viewer-subtitle">
+
+                        Interactive Poisson reconstructed surface
+
+                    </div>
+
+                </div>
+
+
+                <div class="viewer-badge">
+
+                    Interactive 3D
+
+                </div>
+
+            </div>
+
+
+            <div id="plot"></div>
+
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =====================================================
+         INFORMATION CARDS
+    ====================================================== -->
+
+    <div class="info-grid">
+
+
+        <div class="info-card">
+
+            <strong>
+                Input
+            </strong>
+
+            <span>
+                MedSAM2 3D predicted tumor segmentation
+            </span>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <strong>
+                Processing
+            </strong>
+
+            <span>
+                Surface extraction followed by Poisson reconstruction
+            </span>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <strong>
+                Output
+            </strong>
+
+            <span>
+                High-resolution 3D triangular mesh
+            </span>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =====================================================
+         ACTIONS
+    ====================================================== -->
+
+    <div class="actions">
+
+        <a
+            href="/"
+            class="button primary-button"
+        >
+            Reconstruct Another Patient
+        </a>
+
+
+        <a
+            href="/"
+            class="button secondary-button"
+        >
+            Back to Home
+        </a>
+
+    </div>
+
+
+    <div class="footer">
+
+        HELIOS • Lung Tumor 3D Reconstruction
+
+    </div>
+
+
+</main>
+
+
+<!-- =========================================================
+     PLOTLY
+========================================================= -->
+
+<script>
+
+
+const vertices =
+    {{ vertices_data | safe }};
+
+
+const triangles =
+    {{ triangles_data | safe }};
+
+
+const x =
+    vertices.map(v => v[0]);
+
+const y =
+    vertices.map(v => v[1]);
+
+const z =
+    vertices.map(v => v[2]);
+
+
+const i =
+    triangles.map(t => t[0]);
+
+const j =
+    triangles.map(t => t[1]);
+
+const k =
+    triangles.map(t => t[2]);
+
+
+const mesh = {
+
+    type: "mesh3d",
+
+    x: x,
+    y: y,
+    z: z,
+
+    i: i,
+    j: j,
+    k: k,
+
+    intensity: z,
+
+    colorscale: [
+        [0.0, "#253494"],
+        [0.25, "#2c7fb8"],
+        [0.50, "#41b6c4"],
+        [0.75, "#a1dab4"],
+        [1.0, "#ffffcc"]
+    ],
+
+    showscale: false,
+
+    opacity: 1.0,
+
+    flatshading: false,
+
+    lighting: {
+
+        ambient: 0.65,
+
+        diffuse: 0.8,
+
+        specular: 0.35,
+
+        roughness: 0.5,
+
+        fresnel: 0.2
+
+    },
+
+    lightposition: {
+
+        x: 100,
+
+        y: 100,
+
+        z: 200
+
+    }
+
+};
+
+
+const layout = {
+
+    paper_bgcolor: "#ffffff",
+
+    plot_bgcolor: "#ffffff",
+
+    margin: {
+
+        l: 0,
+
+        r: 0,
+
+        t: 10,
+
+        b: 0
+
+    },
+
+    scene: {
+
+        xaxis: {
+
+            title: "X (mm)",
+
+            backgroundcolor: "#f8fafc",
+
+            gridcolor: "#d9e1ea",
+
+            zerolinecolor: "#cbd5e1"
+
+        },
+
+        yaxis: {
+
+            title: "Y (mm)",
+
+            backgroundcolor: "#f8fafc",
+
+            gridcolor: "#d9e1ea",
+
+            zerolinecolor: "#cbd5e1"
+
+        },
+
+        zaxis: {
+
+            title: "Z (mm)",
+
+            backgroundcolor: "#f8fafc",
+
+            gridcolor: "#d9e1ea",
+
+            zerolinecolor: "#cbd5e1"
+
+        },
+
+        aspectmode: "data",
+
+        camera: {
+
+            eye: {
+
+                x: 1.5,
+
+                y: 1.5,
+
+                z: 1.2
+
+            }
+
+        }
+
+    }
+
+};
+
+
+const config = {
+
+    responsive: true,
+
+    displaylogo: false,
+
+    modeBarButtonsToRemove: [
+
+        "lasso2d",
+
+        "select2d",
+
+        "autoScale2d"
+
+    ]
+
+};
+
+
+Plotly.newPlot(
+
+    "plot",
+
+    [mesh],
+
+    layout,
+
+    config
+
+);
+
+
+</script>
+
+
+</body>
+
+</html>
